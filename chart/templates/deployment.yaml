@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+  labels:
+    app: webapp
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+      - name: webapp
+        image: {{ .Values.image.repository }}:{{ .Chart.AppVersion }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        env:
+          - name: S3_ENDPOINT
+            value: https://storage.yandexcloud.net
+          - name: S3_BUCKET
+            value: {{ .Values.s3.bucket }}
+          - name: AWS_ACCESS_KEY_ID
+            value: {{ .Values.s3.accessKeyId }}
+          - name: AWS_SECRET_ACCESS_KEY
+            value: {{ .Values.s3.secretAccessKey }}
+        resources:
+          {{- toYaml .Values.resources | nindent 10 }}

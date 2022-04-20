@@ -1,0 +1,18 @@
+alb:
+  name: <name>
+  certificate: <certificate>
+  subnet: <subnet>
+  ipAddress: <ip-address>
+  host: <host>
+s3:
+  bucket: <bucket>
+  accessKeyId: <access-key-id>
+  secretAccessKey: <secret-access-key>
+image:
+  repository: <image>
+  pullPolicy: Always
+resources:
+  limits:
+    cpu: 1
+    memory: 1Gi
+replicaCount: 2

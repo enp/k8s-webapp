@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.alb.name }}
+  annotations:
+    ingress.alb.yc.io/group-name: {{ .Values.alb.name }}
+    ingress.alb.yc.io/subnets: {{ .Values.alb.subnet }}
+    ingress.alb.yc.io/internal-alb-subnet: {{ .Values.alb.subnet }}
+    ingress.alb.yc.io/internal-ipv4-address: {{ .Values.alb.ipAddress }}
+spec:
+  tls:
+    - hosts:
+      - {{ .Values.alb.host }}
+      secretName: yc-certmgr-cert-id-{{ .Values.alb.certificate }}
+  rules:
+    - host: {{ .Values.alb.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Exact
+            backend:
+              service:
+                name: webapp
+                port:
+                  number: 8080
